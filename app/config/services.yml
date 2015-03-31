@@ -7,5 +7,6 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-    imdb_crawler:
-        class: AppBundle\Services\ImdbCrawler
+    crawler:
+        class: AppBundle\Services\CrawlerService
+        arguments: ["@doctrine"]
