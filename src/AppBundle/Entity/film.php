@@ -70,10 +70,15 @@ class Film
      */
     private $votes;
     
-    /*
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Torrent", mappedBy="film", cascade={"remove"})
      */
     private $torrents;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre", mappedBy="films")
+     */
+    private $genres;
 
 
     /**
@@ -245,5 +250,79 @@ class Film
     public function getVotes()
     {
         return $this->votes;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->torrents = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->genres = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add torrents
+     *
+     * @param \AppBundle\Entity\Torrent $torrents
+     * @return Film
+     */
+    public function addTorrent(\AppBundle\Entity\Torrent $torrents)
+    {
+        $this->torrents[] = $torrents;
+
+        return $this;
+    }
+
+    /**
+     * Remove torrents
+     *
+     * @param \AppBundle\Entity\Torrent $torrents
+     */
+    public function removeTorrent(\AppBundle\Entity\Torrent $torrents)
+    {
+        $this->torrents->removeElement($torrents);
+    }
+
+    /**
+     * Get torrents
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTorrents()
+    {
+        return $this->torrents;
+    }
+
+    /**
+     * Add genres
+     *
+     * @param \AppBundle\Entity\Genre $genres
+     * @return Film
+     */
+    public function addGenre(\AppBundle\Entity\Genre $genres)
+    {
+        $this->genres[] = $genres;
+
+        return $this;
+    }
+
+    /**
+     * Remove genres
+     *
+     * @param \AppBundle\Entity\Genre $genres
+     */
+    public function removeGenre(\AppBundle\Entity\Genre $genres)
+    {
+        $this->genres->removeElement($genres);
+    }
+
+    /**
+     * Get genres
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGenres()
+    {
+        return $this->genres;
     }
 }

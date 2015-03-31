@@ -59,15 +59,15 @@ class Torrent
     /**
      * @var array
      *
-     * @ORM\Column(name="quality", type="array")
+     * @ORM\Column(name="quality", type="string", length=255)
      */
     private $quality;
     
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Film", inversedBy="torrents")
+     * @ORM\JoinColumn(name="film_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $film;
-
 
     /**
      * Get id
