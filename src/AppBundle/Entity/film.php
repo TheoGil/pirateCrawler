@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\filmRepository")
  */
-class film
+class Film
 {
     /**
      * @var integer
@@ -24,51 +24,56 @@ class film
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="imdbId", type="string", length=255)
+     * @ORM\Column(name="imdbId", type="string", length=255, nullable=true)
      */
     private $imdbId;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="year", type="integer")
+     * @ORM\Column(name="year", type="integer", nullable=true)
      */
     private $year;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="director", type="string", length=255)
+     * @ORM\Column(name="director", type="string", length=255, nullable=true)
      */
     private $director;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="thumbnail", type="string", length=255)
+     * @ORM\Column(name="thumbnail", type="string", length=255, nullable=true)
      */
     private $thumbnail;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="rating", type="integer")
+     * @ORM\Column(name="rating", type="integer", nullable=true)
      */
     private $rating;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="votes", type="integer")
+     * @ORM\Column(name="votes", type="integer", nullable=true)
      */
     private $votes;
+    
+    /*
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Torrent", mappedBy="film", cascade={"remove"})
+     */
+    private $torrents;
 
 
     /**
