@@ -20,6 +20,7 @@ class CrawlCommand extends ContainerAwareCommand {
         $this
                 ->setName('pirate:crawl')
                 ->setDescription('Crawl kickass.to for new content to download!');
+        
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
@@ -32,6 +33,8 @@ class CrawlCommand extends ContainerAwareCommand {
         $manager = $doctrine->getManager();
         $torrentRepo = $doctrine->getRepository("AppBundle:Torrent");
         $filmRepo = $doctrine->getRepository("AppBundle:Film");
+        
+        $imdbCrawler = $container->get('ImdbCrawler');
 
         $crawler->filter('a.cellMainLink')->reduce(function($node, $i) {
             return $i < 10;
