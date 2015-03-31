@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class torrent
+class Torrent
 {
     /**
      * @var integer
@@ -62,6 +62,11 @@ class torrent
      * @ORM\Column(name="quality", type="array")
      */
     private $quality;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Film", inversedBy="torrents")
+     */
+    private $film;
 
 
     /**
@@ -210,5 +215,28 @@ class torrent
     public function getQuality()
     {
         return $this->quality;
+    }
+
+    /**
+     * Set film
+     *
+     * @param \AppBundle\Entity\Film $film
+     * @return Torrent
+     */
+    public function setFilm(\AppBundle\Entity\Film $film = null)
+    {
+        $this->film = $film;
+
+        return $this;
+    }
+
+    /**
+     * Get film
+     *
+     * @return \AppBundle\Entity\Film 
+     */
+    public function getFilm()
+    {
+        return $this->film;
     }
 }
