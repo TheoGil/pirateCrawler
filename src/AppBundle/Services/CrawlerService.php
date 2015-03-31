@@ -4,7 +4,7 @@ namespace AppBundle\Services;
 use Goutte\Client;
 use AppBundle\Entity\Torrent;
 use AppBundle\Entity\Film;
-
+use AppBundle\Entity\Genre;
 class CrawlerService {
     
     public function __construct($doctrine){
@@ -16,6 +16,21 @@ class CrawlerService {
         $this->manager = $this->doctrine->getManager();
         $this->torrentRepo = $doctrine->getRepository("AppBundle:Torrent");
         $this->filmRepo = $doctrine->getRepository("AppBundle:Film");
+        $this->genreRepo = $doctrine->getRepository("AppBundle:Genre");
+    }
+    
+    protected function detectQuality($torrentTitle, $detectedQuality){
+        $quality = strtolower($torrentTitle);
+        if( preg_match("/hdrip|bluray|brrip|BluRay/", $quality) ){
+            $quality = "HD";
+        } else if ( preg_match("/dvdrip|webrip|web/", $quality) ) {
+            $quality = "SD";
+        } else if ( preg_match("/cam|ts/", $quality) ) {
+            $quality = "SHIT";
+        } else {
+            $quality = $detectedQuality;
+        }
+        return $quality;
     }
     
     protected function saveFilm($imdbId){
@@ -62,6 +77,8 @@ class CrawlerService {
             $newFilm->setVotes($votes->first()->text());
         }
         
+        $this->crawlCategories($imdbCrawler, $newFilm);
+        
         return $newFilm;
     }
     
@@ -87,12 +104,36 @@ class CrawlerService {
         $newTorrent->setLeechers($leechers);
 
         //QUALITY
-        $quality = $crawler->filter('[id^="quality"]');
-        if (count($quality) > 0) {
-            $newTorrent->setQuality($quality->first()->text());
+        $detectedQuality = $crawler->filter('[id^="quality"]');
+        if (count($detectedQuality) > 0) {
+            $newTorrent->setQuality( $this->detectQuality( $torrentTitle->text(), $detectedQuality->first()->text() ) );
         }
         
         return $newTorrent;
+    }
+    
+    protected function crawlCategories($imdbCrawler, $film){
+        $categories = array();
+        $genres = $imdbCrawler->filter('div.infobar span[itemprop="genre"]');
+        $genresArray = array();
+        $genreName = "meh";
+        
+        $genres->each(function($node) use($genresArray) {
+            $genreName = $node->text();
+            
+            if( !$this->genreRepo->findOneByName($genreName) ){
+                $newGenre = new Genre();
+                $newGenre->setName($genreName);
+                $this->manager->persist($newGenre);
+                array_push($genresArray, $newGenre);
+            }
+        });
+        
+        
+        if( count($genresArray)>0 ){
+            $film->addGenres($genresArray);
+        }
+        
     }
     
     public function crawlMeSomeGoodOlTorrents()
@@ -134,8 +175,9 @@ class CrawlerService {
 
                 $this->manager->persist($newTorrent);
                 $this->manager->persist($film);
+                $this->manager->flush();
             }
         });
-        $this->manager->flush();
+        
     }
 }
