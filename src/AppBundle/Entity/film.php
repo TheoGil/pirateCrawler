@@ -76,7 +76,7 @@ class Film
     private $torrents;
     
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre", mappedBy="films")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre", inversedBy="films")
      */
     private $genres;
 
@@ -301,6 +301,8 @@ class Film
      */
     public function addGenre(\AppBundle\Entity\Genre $genres)
     {
+        var_dump($genres->getName());
+        
         $this->genres[] = $genres;
 
         return $this;

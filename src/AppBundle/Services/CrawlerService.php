@@ -118,22 +118,25 @@ class CrawlerService {
         $genresArray = array();
         $genreName = "meh";
         
-        $genres->each(function($node) use($genresArray) {
+        $genres->each(function($node) use($film) {
             $genreName = $node->text();
             
             if( !$this->genreRepo->findOneByName($genreName) ){
                 $newGenre = new Genre();
                 $newGenre->setName($genreName);
                 $this->manager->persist($newGenre);
-                array_push($genresArray, $newGenre);
+                $film->addGenre($newGenre);
             }
         });
-        
-        
-        if( count($genresArray)>0 ){
-            $film->addGenres($genresArray);
-        }
-        
+    }
+    
+    protected function isTorrentRegisterable ($torrentHash, $imdbId){
+        $torrentAlreadyExists = $this->torrentRepo->findOneByHash($torrentHash);
+        $hasImdBId = ( count($imdbId) > 0 ? true : false );
+        if ( !$torrentAlreadyExists && $hasImdBId ) {
+            return true;
+        };
+        return false;
     }
     
     public function crawlMeSomeGoodOlTorrents()
@@ -155,12 +158,11 @@ class CrawlerService {
             
             // TORRENT HASH
             $matches = array();
-            $hash = preg_match("/btih:([0-9a-zA-Z]*)/", $magnetLink, $matches);
-            
-            $torrentAlreadyExists = $this->torrentRepo->findOneByHash($matches[1]);
+            preg_match("/btih:([0-9a-zA-Z]*)/", $magnetLink, $matches);
+            $hash = $matches[1];
 
             $imdbId = $crawler->filter('a[href*="http://www.imdb.com/title/tt"]');
-            if (!$torrentAlreadyExists && count($imdbId) > 0 ) {
+            if ( $this->isTorrentRegisterable( $hash, $imdbId ) ) {
                 $imdbId = $imdbId->first()->text();
 
                 // BERK

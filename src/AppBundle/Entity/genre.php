@@ -29,7 +29,7 @@ class Genre
     private $name;
     
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Film", inversedBy="genres")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Film", mappedBy="genres")
      */
     private $films;
 

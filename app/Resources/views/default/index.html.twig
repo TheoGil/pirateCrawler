@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Homepage.
+    <h1>Derniers torrents ajoutés</h1>
+    <ul>
+    {% for film in lastFilms %}
+        <li>
+            <a href="{{path( 'filmDetails', { 'id' : film.id } )}}">{{film.title}}</a>
+        </li>
+    {% endfor %}
+    </ul>
 {% endblock %}
