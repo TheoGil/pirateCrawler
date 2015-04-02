@@ -8,10 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/app/example", name="homepage")
+     * @Route("/", name="homepage")
      */
-    public function indexAction()
+    public function homepageAction()
     {
-        return $this->render('default/index.html.twig');
+        $filmRepo = $this->getDoctrine()->getRepository("AppBundle:Film");
+        $lastFilms = $filmRepo->findAll();
+        
+        $params = array(
+            "lastFilms" => $lastFilms
+        );
+        
+        return $this->render('default/index.html.twig', $params);
     }
 }
