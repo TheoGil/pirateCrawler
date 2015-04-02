@@ -5,13 +5,22 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class DefaultController extends Controller
+class FilmController extends Controller
 {
     /**
-     * @Route("/app/example", name="homepage")
+     * @Route("/film/{id}", name="filmDetails")
      */
-    public function indexAction()
+    public function filmDetailsAction($id)
     {
-        return $this->render('default/index.html.twig');
+        $filmRepo = $this->getDoctrine()->getRepository("AppBundle:Film");
+        $film = $filmRepo->findOneById($id);
+        
+        // CHECKER SI ON A BIEN RECUPERE UN FILM, ELSE THROW 404
+        
+        $params = array(
+            "film" => $film
+        );
+        
+        return $this->render('default/filmdetails.html.twig', $params);
     }
 }
