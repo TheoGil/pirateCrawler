@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <span id="film-thumbnail-container">
+        <img src="{{film.thumbnail}}" id="film-thumbnail"/>
+    <span>
+    <span  id="film-details-container">
+        <h1>{{film.title}}</h1>
+        <div>Director: <strong>{{film.director}}</strong> </div>
+        <div>Year: <strong>{{film.year}}</strong> </div>
+        <div>Genre(s):
+            <ul>
+                {% for genre in film.genres %}
+                    <li> <strong>{{genre.name}}</strong> </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            Torrent(s):
+            <ul>
+            {% for torrent in film.torrents %}
+                <li> 
+                    {{torrent.title}} | 
+                    Quality: {{torrent.quality}} | 
+                    Seeds: {{torrent.seeders}} | 
+                    Leechs: {{torrent.leechers}}
+                    <button class="btn btn-default btn-xs"> <i class="glyphicon glyphicon-magnet"></i></button>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    <span>
+{% endblock %}
