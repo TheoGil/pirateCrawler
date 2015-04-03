@@ -13,7 +13,7 @@ class DefaultController extends Controller
     public function homepageAction()
     {
         $filmRepo = $this->getDoctrine()->getRepository("AppBundle:Film");
-        $lastFilms = $filmRepo->findAll();
+        $lastFilms = $filmRepo->paginate(0);
         
         $params = array(
             "lastFilms" => $lastFilms
