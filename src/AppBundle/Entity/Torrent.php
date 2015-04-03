@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * torrent
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TorrentRepository")
  */
 class Torrent
 {
