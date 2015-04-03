@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * genre
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\genreRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\GenreRepository")
  */
 class Genre
 {

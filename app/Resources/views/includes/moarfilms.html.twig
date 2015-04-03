@@ -1,0 +1,7 @@
+{% for film in lastFilms %}
+    <li class="col-xs-6 col-md-3 film-item" data-film-url="{{path( 'filmDetails', { 'id' : film.id } )}}">
+        <img src="{{film.thumbnail}}" class="film-item-thumbnail"/>
+        <p>{{film.title}}</p>
+        <p>{{film.director}}</p>
+    </li>
+{% endfor %}
