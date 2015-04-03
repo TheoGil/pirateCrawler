@@ -121,11 +121,15 @@ class CrawlerService {
         $genres->each(function($node) use($film) {
             $genreName = $node->text();
             
-            if( !$this->genreRepo->findOneByName($genreName) ){
+            $genre = $this->genreRepo->findOneByName($genreName);
+            
+            if( !$genre ){
                 $newGenre = new Genre();
                 $newGenre->setName($genreName);
                 $this->manager->persist($newGenre);
                 $film->addGenre($newGenre);
+            } else {
+                $film->addGenre($genre);
             }
         });
     }
