@@ -24,7 +24,7 @@
                     Quality: {{torrent.quality}} | 
                     Seeds: {{torrent.seeders}} | 
                     Leechs: {{torrent.leechers}}
-                    <button class="btn btn-default btn-xs"> <i class="glyphicon glyphicon-magnet"></i></button>
+                    <a class="btn btn-default btn-xs" href="{{torrent.magnet}}"> <i class="glyphicon glyphicon-magnet"></i></a>
                 </li>
             {% endfor %}
             </ul>

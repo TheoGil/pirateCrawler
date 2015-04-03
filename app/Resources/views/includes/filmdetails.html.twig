@@ -1,33 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <span id="film-thumbnail-container">
-        <img src="{{film.thumbnail}}" id="film-thumbnail"/>
-    <span>
-    <span  id="film-details-container">
-        <h1>{{film.title}}</h1>
-        <div>Director: <strong>{{film.director}}</strong> </div>
-        <div>Year: <strong>{{film.year}}</strong> </div>
-        <div>Genre(s):
-            <ul>
-                {% for genre in film.genres %}
-                    <li> <strong>{{genre.name}}</strong> </li>
+    <div class="row" class="film-details-content">
+        <div class="col-md-4">
+            <img src="{{film.thumbnail}}" class="film-big-cover"/>
+        </div>
+        <div class="col-md-8" id="film-details-container">
+            <h1>{{film.title}}</h1>
+            <div>Director: <strong>{{film.director}}</strong> </div>
+            <div>Year: <strong>{{film.year}}</strong> </div>
+            <div>Genre(s):
+                <ul class="genre-list">
+                    {% for genre in film.genres %}
+                        <li> <strong>{{genre.name}}</strong> </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div>
+                Torrent(s):
+                <ul>
+                {% for torrent in film.torrents %}
+                    <li> 
+                        {{torrent.title}} | 
+                        Quality: {{torrent.quality}} | 
+                        Seeds: {{torrent.seeders}} | 
+                        Leechs: {{torrent.leechers}}
+                        <a class="btn btn-default btn-xs" href="{{torrent.magnet}}"> <i class="glyphicon glyphicon-magnet"></i></a>
+                    </li>
                 {% endfor %}
-            </ul>
+                </ul>
+            </div>
         </div>
-        <div>
-            Torrent(s):
-            <ul>
-            {% for torrent in film.torrents %}
-                <li> 
-                    {{torrent.title}} | 
-                    Quality: {{torrent.quality}} | 
-                    Seeds: {{torrent.seeders}} | 
-                    Leechs: {{torrent.leechers}}
-                    <button class="btn btn-default btn-xs"> <i class="glyphicon glyphicon-magnet"></i></button>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-    <span>
+    </div>
 {% endblock %}

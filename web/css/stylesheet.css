@@ -1,0 +1,47 @@
+.mosaique-film{
+	padding-left: 0px;
+	list-style: none;
+	cursor: pointer;
+}
+.film-item{
+	height: 300px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.film-item p{
+	margin-bottom: 0px;
+}
+.film-item .film-item-thumbnail{
+	max-height: 250px;
+}
+
+#fullscreen-overlay{
+	z-index: 1;
+	position: fixed;
+	/*N'utilise pas width100% car on est à l'intérieur du conteneur bootstrap*/
+	left: 0;
+	right: 0;
+	height: 100%;
+	background-color: rgba(255,255,255,0.9);
+	display: none;
+}
+.overlay{
+	z-index: 1;
+	position: fixed;
+	/*N'utilise pas width100% car on est à l'intérieur du conteneur bootstrap*/
+	left: 0;
+	right: 0;
+	height: 100%;
+	background-color: rgba(255,255,255,0.9);
+	display: none;
+}
+#fullscreen-overlay-close{
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+
+.film-big-cover{
+	width: 100%;
+}

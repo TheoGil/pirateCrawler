@@ -1,12 +1,101 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Derniers torrents ajoutés</h1>
-    <ul>
-    {% for film in lastFilms %}
-        <li>
-            <a href="{{path( 'filmDetails', { 'id' : film.id } )}}">{{film.title}}</a>
-        </li>
-    {% endfor %}
+    <div class="overlay" id="mysuperloader">
+        <div class="windows8">
+            <div class="wBall" id="wBall_1">
+            <div class="wInnerBall">
+            </div>
+            </div>
+            <div class="wBall" id="wBall_2">
+            <div class="wInnerBall">
+            </div>
+            </div>
+            <div class="wBall" id="wBall_3">
+            <div class="wInnerBall">
+            </div>
+            </div>
+            <div class="wBall" id="wBall_4">
+            <div class="wInnerBall">
+            </div>
+            </div>
+            <div class="wBall" id="wBall_5">
+            <div class="wInnerBall">
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="fullscreen-overlay" class="overlay">
+        
+        <div id="fullscreen-overlay-close">CLOSE</div>
+        <div id="fullscreen-overlay-content">
+            
+        </div>
+    </div>
+    <h1>Derniers films ajoutés</h1>
+    <ul class="row mosaique-film" id="filmsList">
+        {% for film in lastFilms %}
+            <li class="col-xs-6 col-md-3 film-item" data-film-url="{{path( 'filmDetails', { 'id' : film.id } )}}">
+                <img src="{{film.thumbnail}}" class="film-item-thumbnail"/>
+                <p> <a href="{{path( 'filmDetails', { 'id' : film.id } )}}">{{film.title}}</a> </p>
+                <p>{{film.director}}</p>
+            </li>
+        {% endfor %}
     </ul>
+    <button id="loadMoreFilms" class="btn btn-default btn-lg" data-url="{{path( 'loadMoarFilms', { 'offset' : '0' } )}}">  <i class="glyphicon glyphicon-plus"></i></button>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            var overlayFilmDetails = $('#fullscreen-overlay');
+            var overlayContent = $('#fullscreen-overlay-content');
+            var loader  = $('#mysuperloader');
+            var offset  = 0;
+            var filmList = $('#filmsList');
+
+            function getFilmDetails(url){
+                console.log('Hello');
+                $.get(
+                    url,
+                    {},
+                    function(response){
+                        loader.css('display', 'none');
+                        overlayFilmDetails.css('display', 'block');
+                        overlayContent.html(response);
+                    }
+                );
+            };
+
+            function loadMoreFilms(url){
+                $.get(
+                    url,
+                    {},
+                    function(response){
+                        loader.css('display', 'none');
+                        filmList.append(response);
+                    }
+                );
+            }
+
+            $('#filmsList').on('click', '.film-item' , function(e){
+                e.preventDefault();
+                loader.css('display', 'block');
+                getFilmDetails( $(this).data("film-url") );
+            });
+
+            $('#fullscreen-overlay-close').on('click', function(e){
+                overlayFilmDetails.css('display', 'none');
+                overlayContent.html("");
+            })
+
+            $('#loadMoreFilms').on('click', function(e){
+                offset += 4;
+                loader.css('display', 'block');
+                loadMoreFilms( $(this).data("url")+offset );
+            })
+        });
+    </script>
 {% endblock %}
